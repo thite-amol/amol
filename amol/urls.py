@@ -19,3 +19,10 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 ]
+
+from django.conf.urls import patterns, include, url
+from amol.views import hello
+
+urlpatterns = patterns('',
+    url(r'^hello/$', hello),
+)
