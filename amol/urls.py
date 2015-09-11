@@ -21,8 +21,12 @@ urlpatterns = [
 ]
 
 from django.conf.urls import patterns, include, url
-from amol.views import hello
+from amol.views import hello,current_datetime, hours_ahead
 
 urlpatterns = patterns('',
     url(r'^hello/$', hello),
+    url(r'^time/$', current_datetime),
+    url(r'^$', hello),
+    url(r'^admin/', admin.site.urls),
+    url(r'^time/plus/(\d{1,2})/$', hours_ahead),
 )
