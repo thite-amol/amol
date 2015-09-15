@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+from django.shortcuts import render
+import MySQLdb
 import datetime
 
 def hello(request):
@@ -6,8 +7,7 @@ def hello(request):
 
 def current_datetime(request):
     now = datetime.datetime.now()
-    html = "<html><body>It is now %s.</body></html>" % now
-    return HttpResponse(html)
+    return render(request, 'current_datetime.html', {'current_date': now})
 
 def hours_ahead(request, offset):
     try:
@@ -17,3 +17,11 @@ def hours_ahead(request, offset):
     dt = datetime.datetime.now() + datetime.timedelta(hours=offset)
     html = "<html><body>In %s hour(s), it will be %s.</body></html>" % (offset, dt)
     return HttpResponse(html)
+
+def book_list(request):
+    db = MySQLdb.connect(user='me', db='mydb', passwd='secret', host='localhost')
+    cursor = db.cursor()
+    cursor.execute('SELECT name FROM books ORDER BY name')
+    names = [row[0] for row in cursor.fetchall()]
+    db.close()
+    return render(request, 'book_list.html', {'names': names})
