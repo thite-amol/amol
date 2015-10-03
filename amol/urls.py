@@ -15,18 +15,22 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from books import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 ]
 
 from django.conf.urls import patterns, include, url
-from amol.views import hello,current_datetime, hours_ahead
+from amol.views import hello,current_datetime, hours_ahead, display_meta
 
 urlpatterns = patterns('',
     url(r'^hello/$', hello),
+    url(r'^metadata/$', display_meta),
     url(r'^time/$', current_datetime),
     url(r'^$', hello),
     url(r'^admin/', admin.site.urls),
     url(r'^time/plus/(\d{1,2})/$', hours_ahead),
+    url(r'^search-form/$', views.search_form),
+    url(r'^search/$', views.search),
 )

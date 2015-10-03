@@ -4,7 +4,11 @@ import MySQLdb
 import datetime
 
 def hello(request):
-    return HttpResponse("Hello world")
+    try:
+        ua = request.META['HTTP_USER_AGENT']
+    except KeyError:
+        ua = 'unknown'
+    return HttpResponse("Welcome to the page at {0} Your browser is {1}" .format(request.path,ua))
 
 def current_datetime(request):
     now = datetime.datetime.now()
@@ -26,3 +30,11 @@ def book_list(request):
     names = [row[0] for row in cursor.fetchall()]
     db.close()
     return render(request, 'book_list.html', {'names': names})
+
+def display_meta(request):
+    values = request.META.items()
+    values.sort()
+    html = []
+    for k, v in values:
+        html.append('<tr><td>%s</td><td>%s</td></tr>' % (k, v))
+    return HttpResponse('<table>%s</table>' % '\n'.join(html))
